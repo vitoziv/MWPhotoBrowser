@@ -247,9 +247,11 @@
 
     // Toolbar items
     BOOL hasItems = NO;
+    
     UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
     fixedSpace.width = 32; // To balance action button
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteCurrentImage:)];
     NSMutableArray *items = [[NSMutableArray alloc] init];
 
     // Left button - Grid
@@ -259,7 +261,8 @@
         if (SYSTEM_VERSION_LESS_THAN(@"7")) buttonName = @"UIBarButtonItemGridiOS6";
         [items addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MWPhotoBrowser.bundle/images/%@.png", buttonName]] style:UIBarButtonItemStylePlain target:self action:@selector(showGridAnimated)]];
     } else {
-        [items addObject:fixedSpace];
+//        [items addObject:fixedSpace];
+        [items addObject:deleteItem];
     }
 
     // Middle - Nav
@@ -1525,6 +1528,13 @@
             [self setControlsHidden:NO animated:YES permanent:YES];
 
         }
+    }
+}
+
+- (void)deleteCurrentImage:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(photoBrowser:tapDeletePhotoAtIndex:)]) {
+        [self.delegate photoBrowser:self tapDeletePhotoAtIndex:_currentPageIndex];
     }
 }
 

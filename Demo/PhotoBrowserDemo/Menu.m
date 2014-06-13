@@ -1151,6 +1151,12 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser tapDeletePhotoAtIndex:(NSUInteger)index
+{
+    [self.photos removeObjectAtIndex:index];
+    [photoBrowser reloadData];
+}
+
 #pragma mark - Load Assets
 
 - (void)loadAssets {
